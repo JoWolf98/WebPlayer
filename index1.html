@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="pl">
+<head>
+	<meta charset="utf-8"/>
+	<title>WebPlayer</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="http://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet" type="text/css">
+	
+	<script type="text/javascript">
+	
+
+	</script>
+</head>
+<body>
+	<center>
+	<a href="https://cooltext.com"><img src="https://images.cooltext.com/5423545.png" width="388" height="89" alt="WebPlayer" /></a><br />
+	</center>
+	<form>
+	<div class="form-group">
+		<div class="col-sm-8">
+		<label for="chooseurl">Select video from list</label>
+		<select class="form-control" id="chooseurl" name="links" onchange="window.location.href=this.value;">
+		<option value="index.html"></option>
+		<option value="index.html">Cloudy</option>
+		<option value="index1.html">Umbrella</option>
+		<option value="index2.html">Pigeons</option>
+		<option value="index3.html">Take me home</option>
+		</select>
+		</br>
+		
+	</div>
+	</form>
+	</br>
+	</br>
+	<center>
+	<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+	<video id="video" controls="" src="blob:https://hls-js.netlify.app/3f059e9b-352e-4583-a600-c25170aebff8" height="600"></video>
+	<script>
+
+        if(Hls.isSupported()) {
+          var video = document.getElementById('video');
+          var hls = new Hls();
+          hls.loadSource('./PIMP/Umbrella/umbrella.m3u8');
+          hls.attachMedia(video);
+          hls.on(Hls.Events.MANIFEST_PARSED,function() {
+            video.play();
+        });
+       }
+       // hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
+       // When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element throught the `src` property.
+       // This is using the built-in support of the plain video element, without using hls.js.
+        else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+          video.src = 'http://streamfilm.cba.pl/Umbrella/hsl_playlist10.m3u8';
+          video.addEventListener('canplay',function() {
+            video.play();
+          });
+        }
+
+
+        window.onload = function() {
+            console.log(document.querySelectorAll('.btn'))
+            document.querySelectorAll('.btn').forEach(element => {
+                console.log(element)
+                element.addEventListener('click', (event)=>{
+                   let heightElement = document.getElementById('height')
+                   let widthElement = document.getElementById('width')
+				   let bitrateElement = document.getElementById('bitrate')
+                   heightElement.innerHTML = event.currentTarget.getAttribute('height')
+                   widthElement.innerHTML = event.currentTarget.getAttribute('width')
+				   bitrateElement.innerHTML=event.currentTarget.getAttribute('bitrate')
+                })
+            }); 
+        };
+       
+
+	</script>
+	</center>
+	<center>
+	<button type="button" class="btn btn-sm btn-success" onclick="hls.currentLevel=-1" height="Height: 720" width="Width: 1280" bitrate="Bitrate: 227 kbps">auto</button>
+	<button type="button" class="btn btn-sm btn-success" onclick="hls.currentLevel=0" height="Height: 184" width="Width: 320" bitrate="Bitrate: 191 kbps">0 (240p)</button>
+	<button type="button" class="btn btn-sm btn-success" onclick="hls.currentLevel=1" height="Height: 288" width="Width: 512" bitrate="Bitrate: 193 kbps">1 (380p)</button>
+	<button type="button" class="btn btn-sm btn-success" onclick="hls.currentLevel=2" height="Height: 480" width="Width: 848" bitrate="Bitrate: 206 kbps">2 (480p)</button>
+	<button type="button" class="btn btn-sm btn-success" onclick="hls.currentLevel=3" height="Height: 720" width="Width: 1280" bitrate="Bitrate: 227 kbps">3 (720p)</button>
+	<button type="button" class="btn btn-sm btn-success" onclick="hls.currentLevel=4" height="Height: 1080" width="Width: 1920" bitrate="Bitrate: 279 kbps">4 (1080p)</button>
+	</center>
+	<center>
+	<h3>Video Information</h3>
+	<p id="bitrate"></p>
+	<p id="height"></p>
+	<p id="width"></p>
+	<p>Video codec: H.264</p>
+	<p>Audio codec: MPEG-4 AAC</p>
+	</center>
+</body>
+</html>
